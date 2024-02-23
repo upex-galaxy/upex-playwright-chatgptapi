@@ -37,18 +37,19 @@ jobs:
       run: |
         bun run pw:install
 
-    - name: 🎭️ Playwright Regression Test on
+    - name: 🎭️ Playwright Regression Test
       run: |
         bun run regression
       env:
         CHATGPT_API_KEY_PW: ${{ secrets.CHATGPT_API_KEY_PW }}
+        BASE_URL_QA: ${{ secrets.BASE_URL_QA }}
 
-    - name: 📊Generate Allure Report for
+    - name: 📊Generate Allure Report
       if: always()
       run: |
         bun run allure:gen
 
-    - name: 📡Upload Artifact - Allure Report for
+    - name: 📡Upload Artifact - Allure Report
       uses: actions/upload-artifact@v4
       if: always()
       with:
@@ -56,7 +57,7 @@ jobs:
         path: allure-report/
         retention-days: 15
 
-    - name: 📡Upload Artifact - Test Reports for
+    - name: 📡Upload Artifact - Test Reports
       uses: actions/upload-artifact@v4
       if: always()
       with:
@@ -71,8 +72,8 @@ jobs:
         username: ${{ env.XRAY_CLIENT }}
         password: ${{ env.XRAY_SECRET }}
         testFormat: 'junit'
-        testPaths: 'test-junit-report/${{ matrix.browser }}-importer-report.xml'
-        testExecKey: '' #* Este debería ser el TX predeterminado para este Pipeline de Regresión.
+        testPaths: 'test-junit-report/playwright-importer-report.xml'
+        testExecKey: 'GX3-2447' #* Este debería ser el TX predeterminado para este Pipeline de Regresión.
         projectKey: 'GX3'
       env:
         XRAY_CLIENT: ${{ secrets.XRAY_CLIENT_ID }}

@@ -40,7 +40,10 @@ jobs:
 
     - name: ✅ 🧪Test Suite Execution
       run: | #todo: EDITAR AQUÍ EL ARCHIVO SUITE A EJECUTAR:
-        bun run test:ci tests/elements/uploadDownload_example.test.ts
+        bun run test tests/specs/chat/completionsGPT.test.ts
+      env:
+        CHATGPT_API_KEY_PW: ${{ secrets.CHATGPT_API_KEY_PW }}
+        BASE_URL_QA: ${{ secrets.BASE_URL_QA }}
 
     - name: 📊Generate Allure Report
       run: |
@@ -54,7 +57,7 @@ jobs:
         password: ${{ env.XRAY_SECRET }}
         testFormat: 'junit'
         testPaths: 'test-junit-report/main-importer-report.xml'
-        testExecKey: 'GX3-1533' #!Cambiar a tu TX correspondiente.
+        testExecKey: 'GX3-2447' #!Cambiar a tu TX correspondiente.
         projectKey: 'GX3' #!Cambiar a tu Proyecto Level correspondiente.
       env:
         XRAY_CLIENT: ${{ secrets.XRAY_CLIENT_ID }}

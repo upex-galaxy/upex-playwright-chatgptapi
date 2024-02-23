@@ -8,13 +8,13 @@ export default defineConfig({
 	// Test Repo Directory:
 	testDir: './tests',
 	/* Maximum time one test can run for. */
-	timeout: 10 * 1000, // API Test should be fast enough (10 seconds)
+	timeout: 10 * 1000, //? API Test should be fast enough (10 seconds)
 	expect: {
 		/**
 		 * Maximum time expect() should wait for the condition to be met.
 		 * For example in `await expect(locator).toHaveText();`
 		 */
-		timeout: 1000, // API Response validation should be instant (1 second)
+		timeout: 1000, //? API Response validation should be instant (1 second)
 	},
 	// Test Matched those suites which are test.ts or spec.ts
 	testMatch: /.*(test|spec)\.(ts)/,

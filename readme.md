@@ -7,7 +7,7 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 
-[![🧪Playwright Regression Testing](https://github.com/upex-galaxy/playwright-typescript-gx/actions/workflows/regression.yml/badge.svg?branch=QA)](https://github.com/upex-galaxy/playwright-typescript-gx/actions/workflows/regression.yml)
+[![🧪Playwright Regression Testing](https://github.com/upex-galaxy/upex-playwright-chatgptapi/actions/workflows/regression.yml/badge.svg?branch=QA)](https://github.com/upex-galaxy/upex-playwright-chatgptapi/actions/workflows/regression.yml)
 
 [![vscode-logo]][vscode-site] [![playwright-logo]][playwright-site] [![javascript-logo]][javascript-site] [![typescript-logo]][typescript-site]
 
