@@ -86,7 +86,7 @@ jobs:
     steps:
 
     - name: 🔔Slack Notification of Done
-      if: always()
+      if: env.SLACK_WEBHOOK != ''
       uses: rtCamp/action-slack-notify@v2
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
