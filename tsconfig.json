@@ -14,7 +14,7 @@
 			"@helper/*": ["./tests/helper/*"],
 			"@data/*": ["./tests/data/*"],
 			"@type/*": ["./tests/interfaces/*"],
-			"@api/*": ["./tests/apis/*"],
+			"@api/*": ["tests/api/*"],
 			"@TestBase": ["./tests/pages/TestBase.ts"],
 			"@playwrightConfig": ["./playwright.config.ts"]
 		}

@@ -13,12 +13,8 @@ on:
 jobs:
   RegressionTesting:
     name: regression
-    timeout-minutes: 60
+    timeout-minutes: 10 # * Este tiempo es el máximo que puede durar el Pipeline de Regresión.
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: ['chrome', 'firefox', 'edge', 'iphone'] #? Runs tests in 4 different browsers
 
     steps:
 
@@ -41,60 +37,34 @@ jobs:
       run: |
         bun run pw:install
 
-    - name: 🎭️ Playwright Regression Test on ${{ matrix.browser }}
+    - name: 🎭️ Playwright Regression Test on
       run: |
-        bun run regression:${{ matrix.browser }}
+        bun run regression
       env:
-        TRELLO_ENV_CI_BASEURL: ${{secrets.TRELLO_ENV_CI_BASEURL}}
-        TRELLO_API_CI_KEY: ${{secrets.TRELLO_API_CI_KEY}}
-        TRELLO_API_CI_TOKEN: ${{secrets.TRELLO_API_CI_TOKEN}}
+        CHATGPT_API_KEY_PW: ${{ secrets.CHATGPT_API_KEY_PW }}
 
-    - name: 📊Generate Allure Report for ${{ matrix.browser }}
+    - name: 📊Generate Allure Report for
       if: always()
       run: |
-        bun run allure:gen:${{ matrix.browser }}
+        bun run allure:gen
 
-    - name: 📡Upload Artifact - Allure Report for ${{ matrix.browser }}
+    - name: 📡Upload Artifact - Allure Report for
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: allure-${{ matrix.browser }}-report
-        path: allure-report/${{ matrix.browser }}
+        name: allure-playwright-report
+        path: allure-report/
         retention-days: 15
 
-    - name: 📡Upload Artifact - Test Reports for ${{ matrix.browser }}
+    - name: 📡Upload Artifact - Test Reports for
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: html-${{ matrix.browser }}-report
-        path: test-html-report/${{ matrix.browser }}
+        name: html-playwright-report
+        path: test-html-report/playwright
         retention-days: 15
 
-    - name: 📦️ Set testExecKey for Jira XRay
-      if: always()
-      id: setTestExecKey
-      run: |
-        if [[ "${{ matrix.browser }}" == "chrome" ]]; then
-          echo "TXID=GX3-1533" >> $GITHUB_OUTPUT
-        elif [[ "${{ matrix.browser }}" == "firefox" ]]; then
-          echo "TXID=GX3-1685" >> $GITHUB_OUTPUT
-        elif [[ "${{ matrix.browser }}" == "edge" ]]; then
-          echo "TXID=GX3-1686" >> $GITHUB_OUTPUT
-        elif [[ "${{ matrix.browser }}" == "iphone" ]]; then
-          echo "TXID=GX3-1687" >> $GITHUB_OUTPUT
-        fi
-
-    - name: ✅Check if XRAY_CLIENT is Defined
-      if: always()
-      run: |
-        if [[ -z "${{ secrets.XRAY_CLIENT_ID }}" ]]; then
-          echo "XRAY_CLIENT_ID is not set. Please set it in the repository secrets to enable Slack notifications."
-        fi
-        if [[ -z "${{ secrets.XRAY_CLIENT_SECRET }}" ]]; then
-          echo "XRAY_CLIENT_SECRET is not set. Please set it in the repository secrets to enable Slack notifications."
-        fi
-
-    - name: ✅Import Test Results to Xray TX -- ${{ env.TXID }} (${{ matrix.browser }})
+    - name: ✅Import Test Results to Xray TX
       if: env.XRAY_CLIENT != '' && env.XRAY_SECRET != ''
       uses: mikepenz/xray-action@v3
       with:
@@ -102,10 +72,9 @@ jobs:
         password: ${{ env.XRAY_SECRET }}
         testFormat: 'junit'
         testPaths: 'test-junit-report/${{ matrix.browser }}-importer-report.xml'
-        testExecKey: ${{ env.TXID }} #* Este debería ser el TX predeterminado para este Pipeline de Regresión.
+        testExecKey: '' #* Este debería ser el TX predeterminado para este Pipeline de Regresión.
         projectKey: 'GX3'
       env:
-        TXID: ${{ steps.setTestExecKey.outputs.TXID }}
         XRAY_CLIENT: ${{ secrets.XRAY_CLIENT_ID }}
         XRAY_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
 
@@ -114,11 +83,6 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-    - name: 🔔Check if SLACK_WEBHOOK is Defined
-      run: |
-        if [[ -z "${{ secrets.SLACK_WEBHOOK }}" ]]; then
-          echo "SLACK_WEBHOOK is not set. Please set it in the repository secrets to enable Slack notifications."
-        fi
 
     - name: 🔔Slack Notification of Done
       if: always()
@@ -126,7 +90,7 @@ jobs:
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         SLACK_USERNAME: Ari✨
-        SLACK_MESSAGE: ':test_tube: PLAYWRIGHT: REGRESSION RESULTS IMPORTED TO JIRA :rocket:'
+        SLACK_MESSAGE: ':test_tube: (PLAYWRIGHT) PROJECT: ChatGPT API Testing: REGRESSION RESULTS IMPORTED TO JIRA :rocket:'
         SLACK_COLOR: ${{ needs.RegressionTesting.result }}
         SLACK_ICON: https://image.cdn2.seaart.ai/2023-12-06/clo9g0h4msbc73ac2sog/99e1abc36f32945cd4bacf5ee7448e96194545f7_high.webp
 

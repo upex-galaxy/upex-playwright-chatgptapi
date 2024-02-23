@@ -2,24 +2,23 @@ import { defineConfig, devices } from '@playwright/test';
 import * as dotenv from 'dotenv';
 // See https://github.com/motdotla/dotenv
 dotenv.config();
-// Example using Setup/TearDown Precondition: https://playwright.dev/docs/test-global-setup-teardown
-export const STORAGE_STATE = 'tests/helper/auth/user.json';
 
 // See https://playwright.dev/docs/test-configuration.
 export default defineConfig({
 	// Test Repo Directory:
 	testDir: './tests',
 	/* Maximum time one test can run for. */
-	timeout: 40 * 1000,
+	timeout: 10 * 1000, // API Test should be fast enough (10 seconds)
 	expect: {
 		/**
 		 * Maximum time expect() should wait for the condition to be met.
 		 * For example in `await expect(locator).toHaveText();`
 		 */
-		timeout: 5000,
+		timeout: 1000, // API Response validation should be instant (1 second)
 	},
 	// Test Matched those suites which are test.ts or spec.ts
 	testMatch: /.*(test|spec)\.(ts)/,
+	testIgnore: /.*\.example\.test\.(ts)/,
 	/* Run tests in files in parallel */
 	fullyParallel: false,
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -31,14 +30,14 @@ export default defineConfig({
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
 	reporter: [
 		['./tests/custom-reporter.ts'],
-		['html', { outputFolder: 'test-html-report/main', open: 'never' }],
-		['junit', { outputFolder: 'test-junit-report', outputFile: 'test-junit-report/main-importer-report.xml' }],
+		['html', { outputFolder: 'test-html-report/playwright', open: 'never' }],
+		['junit', { outputFolder: 'test-junit-report', outputFile: 'test-junit-report/playwright-importer-report.xml' }],
 		['allure-playwright'],
 	],
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
 		/* Base URL to use in actions like `await page.goto('/')`. */
-		baseURL: 'https://demoqa.com',
+		baseURL: 'https://api.openai.com/v1',
 		// Headless Mode: true by default
 		headless: true,
 		// Viewport Resolution
@@ -53,37 +52,10 @@ export default defineConfig({
 	/* Configure projects for major browsers */
 	projects: [
 		{
-			name: 'setup',
-			testMatch: /.*\.(test)\.(setup)\.(js|ts)/,
-		},
-		{
 			name: 'chromium',
 			use: { ...devices['Desktop Chrome'], channel: 'chrome' },
 		},
-		{
-			name: 'firefox',
-			use: { ...devices['Desktop Firefox'] },
-		},
-		//* Test against branded browsers:
-		{
-			name: 'edge',
-			use: { ...devices['Desktop Edge'], channel: 'msedge' },
-		},
-		//* Test against mobile Devices:
-		{
-			name: 'iphone',
-			use: { ...devices['iPhone 14 Pro'] },
-		},
-		{
-			name: 'super-precondition-example',
-			testMatch: /.*\.(test)\.(prc)\.(js|ts)/,
-			use: { 
-				...devices['Desktop Chrome'], 
-				channel: 'chrome', 
-				storageState: STORAGE_STATE,
-			},
-			dependencies: ['setup'],
-		},
+		//? I removed all of the other browsers because this project is just about Backend Testing (API validation)
 	],
 
 	/* Folder for test artifacts such as screenshots, videos, traces, etc. */

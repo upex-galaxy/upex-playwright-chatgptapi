@@ -1,6 +1,6 @@
 #*🤖Este Pipeline de CI se activa al PUSHEAR o MERGEAR en ramas de tareas que no sean QA ni Main, y consiste en ejecutar los tests de una US e importar los resultados a Jira!🚀
 #*👩🏻‍🔬Para utilizar este Pipeline de Ari, sigue los siguientes pasos:
-#todo: 1 -> Crea tu propio archivo sanity.yml con tu username de GitHub, ejemplo sanity-saiotest.yml
+#todo: 1 -> CREA TU PROPIO ARCHIVO sanity.yml con tu username de GitHub, ejemplo sanity-saiotest.yml
 #todo: 2 -> Copia el contenido de este archivo yml y pégalo en tu nuevo archivo yml con tu username.
 #todo: 3 -> Modifica el trigger del Push en donde dice "TuBranchAqui", coloca tu nombre tal cual de tu rama git.
 #todo: 4 -> Modifica el archivo de prueba a ejectuar en el script del "yarn test" (ver ejemplo en este archivo)
@@ -46,28 +46,18 @@ jobs:
       run: |
         bun run allure:open
 
-    - name: ✅Check if XRAY_CLIENT is Defined
-      if: always()
-      run: |
-        if [[ -z "${{ secrets.XRAY_CLIENT_ID }}" ]]; then
-          echo "XRAY_CLIENT_ID is not set. Please set it in the repository secrets to enable Slack notifications."
-        fi
-        if [[ -z "${{ secrets.XRAY_CLIENT_SECRET }}" ]]; then
-          echo "XRAY_CLIENT_SECRET is not set. Please set it in the repository secrets to enable Slack notifications."
-        fi
-
     - name: ✅Import Test Results to Xray
       if: env.XRAY_CLIENT != '' && env.XRAY_SECRET != ''
       uses: mikepenz/xray-action@v3
       with:
-        username: ${{secrets.XRAY_CLIENT_ID}}
-        password: ${{secrets.XRAY_CLIENT_SECRET}}
+        username: ${{ env.XRAY_CLIENT }}
+        password: ${{ env.XRAY_SECRET }}
         testFormat: 'junit'
         testPaths: 'test-junit-report/main-importer-report.xml'
         testExecKey: 'GX3-1533' #!Cambiar a tu TX correspondiente.
         projectKey: 'GX3' #!Cambiar a tu Proyecto Level correspondiente.
       env:
-        XRAY_CLIENT: ${{ secrets.XRAY_CLIENT_SECRET }}
+        XRAY_CLIENT: ${{ secrets.XRAY_CLIENT_ID }}
         XRAY_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
 
     - name: 📡Upload Artifact - Allure Report
@@ -77,13 +67,6 @@ jobs:
         name: test-report
         path: allure-report
         retention-days: 15
-
-    - name: 🔔Check if SLACK_WEBHOOK is Defined
-      if: always()
-      run: |
-        if [[ -z "${{ secrets.SLACK_WEBHOOK }}" ]]; then
-          echo "SLACK_WEBHOOK is not set. Please set it in the repository secrets to enable Slack notifications."
-        fi
 
     - name: 🔔Slack Notification of Done
       if: env.SLACK_WEBHOOK != ''

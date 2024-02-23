@@ -1,10 +1,10 @@
 import type { Page } from '@playwright/test';
+import { TestTools } from './TestTools';
 
-export class ReactPage {
-	page: Page;
+export class ReactPage extends TestTools {
 
-	constructor(driver: Page) {
-		this.page = driver;
+	constructor(page: Page) {
+		super(page);
 	}
 
 	getByReactTool(dataId: string, page: Page, options?: { hasText: string }) {

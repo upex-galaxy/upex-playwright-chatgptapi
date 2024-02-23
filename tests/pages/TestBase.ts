@@ -3,13 +3,16 @@ import { SpaceLoginPage } from './SpaceLoginPage';
 import { SpaceProductPage } from './SpaceProductPage';
 import { SpaceCheckoutPage } from './SpaceCheckoutPage';
 import { OrangeLoginPage } from './OrangeLoginPage';
+import { ChatGptAPI } from '@api/ChatGptAPI';
 
 const test = driver.extend<{
 	orangeLoginPage: OrangeLoginPage; //? Esto Page es para un ejemplo usando el superPrecondition.
 	loginPage: SpaceLoginPage;
 	productPage: SpaceProductPage;
 	checkoutPage: SpaceCheckoutPage;
+	chatGptAPI: ChatGptAPI
 }>({
+	chatGptAPI: async ({ page }, use) => await use(new ChatGptAPI(page)),
 	orangeLoginPage: async ({ page }, use) => await use(new OrangeLoginPage(page)),
 	loginPage: async ({ page }, use) => await use(new SpaceLoginPage(page)),
 	productPage: async ({ page }, use) => await use(new SpaceProductPage(page)),
