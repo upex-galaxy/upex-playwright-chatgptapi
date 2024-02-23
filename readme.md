@@ -11,29 +11,31 @@
 
 [![vscode-logo]][vscode-site] [![playwright-logo]][playwright-site] [![javascript-logo]][javascript-site] [![typescript-logo]][typescript-site]
 
-<h1 align="center">🧪QA Automation: 🎭Playwright TypeScript📘</h1>
+<h1 align="center">🧪QA API Automation: 🎭Playwright TypeScript📘</h1>
 <!-- PROJECT LOGO -->
+
 <br />
 <div align="center">
   <a>
     <img src="https://user-images.githubusercontent.com/91127281/215841865-9732a009-bb36-4742-a516-7c6dcf97114a.png" alt="Logo" width="" height="400">
   </a>
 
-<h2 align="center">🧪PLAYPEX🧪</h2>
+<h2 align="center">🧪SUT: CHAT-GPT API🧪</h2>
+<img src="https://github.com/upex-galaxy/upex-playwright-chatgptapi/assets/91127281/7a1c349d-b746-418e-befc-d5229c2a65cf">
 
   <p align="center">
     <h3><strong>APRENDE Y GANA EXPERIENCIA TRABAJANDO EN UPEX GALAXY</strong></h3>
     <br />
-    <a href="https://github.com/upex-galaxy/playwright-typescript"><strong>PLAYWRIGHT AL GRANO »</strong></a>
+    <a href="https://www.youtube.com/watch?v=cFTBlDedhAQ"><strong> 📼 VER GUÍA: Playwright Avanzado API Testing »</strong></a>
     <br />
     <br />
-    <a href="https://playwright.dev/docs/getting-started-vscode">Getting Started Docs »</a>
+    <a href="https://playwright.dev/docs/getting-started-vscode">🎭️ Documentation Oficial de Playwright »</a>
   </p>
 </div>
 
 <!-- ABOUT THE PROJECT -->
 
-# 🧪Framework: Playwright🎭
+# 🧪Framework: Playwright🎭 con Typescript
 
 ## 🏹ORGANIZACIÓN Y ESTRUCTURA DE PROYECTO
 
@@ -46,7 +48,7 @@ Ahora el Directorio de UPEX Galaxy, será mucho más simple.
 
 1. **📡 Clona el Repositorio del Proyecto**:
     ```
-    git clone https://github.com/upex-galaxy/playwright-typescript-gx.git
+    git clone https://github.com/upex-galaxy/upex-playwright-chatgptapi.git
     ```
 2. **❗💿 Instala todas las Dependencias del Proyecto**:
     ```
