@@ -83,6 +83,7 @@ export class ChatGptAPI extends TestTools {
 				}
 			]
 		};
+		console.log('📦️ Request Body:', body);
 		console.log('💬 Prompt:', arg.givenPrompt);
 		const response = await this.apiPOST(gptEndpoints.completions, body);
 		const bodyRes = await response.json() as ChatCompletionResponse;

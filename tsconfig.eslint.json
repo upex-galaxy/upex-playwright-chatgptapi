@@ -3,5 +3,10 @@
   "include": [
     ".eslintrc.json", // ESLint's config must be included
     "**/*.ts", // TypeScript files
+    "**/*.js", // Javscript files
   ],
+  "exclude": [
+    "node_modules", // Exclude node_modules
+    "dist", // Exclude dist
+  ]
 }
