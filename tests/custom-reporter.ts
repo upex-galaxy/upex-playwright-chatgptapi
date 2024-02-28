@@ -172,7 +172,7 @@ class MyReporter implements Reporter {
 
 	onStdOut(chunk: string | Buffer, test: void | TestCase, result: void | TestResult) {
 		console.group();
-		if (this.runningTests.length === 1) console.log(chunk);
+		console.log(chunk);
 		if (result && result.errors.length > 0) console.log(result.errors);
 		console.groupEnd();
 	}
