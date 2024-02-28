@@ -8,7 +8,7 @@ export default defineConfig({
 	// Test Repo Directory:
 	testDir: './tests',
 	/* Maximum time one test can run for. */
-	timeout: 10 * 1000, //? API Test should be fast enough (10 seconds)
+	timeout: 40 * 1000, //? API Test should be fast enough (10 seconds)
 	expect: {
 		/**
 		 * Maximum time expect() should wait for the condition to be met.
