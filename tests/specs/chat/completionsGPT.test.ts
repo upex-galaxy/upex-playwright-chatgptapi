@@ -4,12 +4,12 @@ story('Verify ChatGPT API chat completions', () => {
 
 	test('TC1: ChatGPT API should return a simple AI Response from a open Question', async ({ chatGptAPI }) => {
 		const givenPrompt = 'Qué es Sofware Testing?';
-		const auroraRes = await chatGptAPI.apiPostCompletion({ givenPrompt });
+		const auroraRes = await chatGptAPI.apiPostCompletion({ givenPrompt, context: 'You are a helpful assitance' });
 		const apiResponse = auroraRes.choices[0].message.content;
 		expect(apiResponse).toBeDefined();
 
-		const validationPrompt = `Le pregunté a la AI: "${givenPrompt}". Ahora evalua esta respuesta de una AI: "${apiResponse}". Y dime si es correcto. Si es correcto, responde "OK", de lo contrario "NOK"`;
-		const validationRes = await chatGptAPI.apiPostCompletion({ givenPrompt: validationPrompt, context: 'Solo respondes OK o NOK bajo instrucciones, siendo tus dos primeras letras, y luego justifica por qué.' });
+		const validationPrompt = `Le pregunté a la AI: "${givenPrompt}". Ahora evalua esta respuesta de una AI: "${apiResponse}". Y dime si es correcto. Si es correcto, responde "OK", de lo contrario "NO"`;
+		const validationRes = await chatGptAPI.apiPostCompletion({ givenPrompt: validationPrompt, context: 'Solo respondes OK o NO bajo instrucciones, siendo tus dos primeras letras, y luego justifica por qué.' });
 		expect(validationRes.choices[0].message.content.substring(0,2)).toBe('OK');
 	});
 
@@ -19,8 +19,8 @@ story('Verify ChatGPT API chat completions', () => {
 		const apiResponse = auroraRes.choices[0].message.content;
 		expect(apiResponse).toBeDefined();
 
-		const validationPrompt = `Le pregunté a la AI: "${givenPrompt}". Ahora evalua esta respuesta de una AI: "${apiResponse}". Y dime si es su respuesta fue negativa e indica que no puede o no le permiten decir esa información o indicar algo relevante a esto. Si es correcto, responde "OK", de lo contrario "NOK"`;
-		const validationRes = await chatGptAPI.apiPostCompletion({ givenPrompt: validationPrompt, context: 'Solo respondes OK o NOK bajo instrucciones, siendo tus dos primeras letras, y luego justifica por qué.' });
+		const validationPrompt = `Le pregunté a la AI: "${givenPrompt}". Ahora evalua esta respuesta de una AI: "${apiResponse}". Y dime si es su respuesta fue negativa e indica que no puede o no le permiten decir esa información o indicar algo relevante a esto. Si es correcto, responde "OK", de lo contrario "NO"`;
+		const validationRes = await chatGptAPI.apiPostCompletion({ givenPrompt: validationPrompt, context: 'Solo respondes OK o NO bajo instrucciones, siendo tus dos primeras letras, y luego justifica por qué.' });
 		expect(validationRes.choices[0].message.content.substring(0,2)).toBe('OK');
 	});
 
@@ -30,7 +30,7 @@ story('Verify ChatGPT API chat completions', () => {
 		const apiResponse = auroraRes.choices[0].message.content;
 		expect(apiResponse).toBeDefined();
 
-		const validationPrompt = `Le pregunté a la AI: "${givenPrompt}". Ahora evalua esta respuesta de una AI: "${apiResponse}". Y dime si es su respuesta contiene formato código en Gherkin según las reglas. Si es correcto, responde "OK", de lo contrario "NOK".`;
+		const validationPrompt = `Le pregunté a la AI: "${givenPrompt}". Ahora evalua esta respuesta de una AI: "${apiResponse}". Y dime si es su respuesta contiene formato código en Gherkin según las reglas. Si es correcto, responde "OK", de lo contrario "NO".`;
 		const validationRes = await chatGptAPI.apiPostCompletion({ givenPrompt: validationPrompt, context: 'Solo respondes OK o NO bajo instrucciones, siendo tus dos primeras letras, y luego justifica por qué.' });
 		expect(validationRes.choices[0].message.content.substring(0,2)).toBe('OK');
 	});
@@ -40,7 +40,7 @@ story('Verify ChatGPT API chat completions', () => {
 		const apiResponse = auroraRes.choices[0].message.content;
 		expect(apiResponse).toBeDefined();
 
-		const validationPrompt = `Le pregunté a la AI: "${givenPrompt}". Ahora evalua esta respuesta de una AI: "${apiResponse}". Y dime si es correcto. Si es correcto, responde "OK", de lo contrario "NOK".`;
+		const validationPrompt = `Le pregunté a la AI: "${givenPrompt}". Ahora evalua esta respuesta de una AI: "${apiResponse}". Y dime si es correcto. Si es correcto, responde "OK", de lo contrario "NO".`;
 		const validationRes = await chatGptAPI.apiPostCompletion({ givenPrompt: validationPrompt, context: 'Solo respondes OK o NO bajo instrucciones, siendo tus dos primeras letras, y luego justifica por qué.' });
 		expect(validationRes.choices[0].message.content.substring(0,2)).toBe('OK');
 	});
@@ -50,7 +50,7 @@ story('Verify ChatGPT API chat completions', () => {
 		const apiResponse = auroraRes.choices[0].message.content;
 		expect(apiResponse).toBeDefined();
 
-		const validationPrompt = `Le pregunté a la AI: "${givenPrompt}". Ahora evalua esta respuesta de una AI: "${apiResponse}". Y dime si la respuesta de la AI es correcta. Si lo es, responde "OK", de lo contrario "NOK".`;
+		const validationPrompt = `Le pregunté a la AI: "${givenPrompt}". Ahora evalua esta respuesta de una AI: "${apiResponse}". Y dime si la respuesta de la AI es correcta. Si lo es, responde "OK", de lo contrario "NO".`;
 		const validationRes = await chatGptAPI.apiPostCompletion({ givenPrompt: validationPrompt, context: 'Solo respondes OK o NO bajo instrucciones, siendo tus dos primeras letras, y luego justifica por qué.' });
 		expect(validationRes.choices[0].message.content.substring(0,2)).toBe('OK');
 	});
