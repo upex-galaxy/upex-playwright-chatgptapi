@@ -65,9 +65,37 @@ type CompletionMessage = {
   role: string;
   content: string;
 };
+type CompletionMessageComplex = {
+  role: string;
+  content: ImageUrlBody[] | string;
+};
 
 type CompletionUsage = {
   prompt_tokens: number;
   completion_tokens: number;
   total_tokens: number;
 };
+
+export type ImageGenerationRequest = {
+  model: 'dall-e-3',
+  prompt: string,
+  n: number,
+  size: string
+}
+
+export type ImageGenerationResponse = {
+  created: number,
+  data: {url: string}[]
+}
+
+export type ImageVisionPreviewRequest = {
+    model: 'gpt-4-vision-preview',
+    messages: CompletionMessageComplex[],
+    max_tokens: number
+  }
+
+type ImageUrlBody = {
+  type: 'image_url'|'text',
+  image_url?: {url: string},
+  text?: string
+}

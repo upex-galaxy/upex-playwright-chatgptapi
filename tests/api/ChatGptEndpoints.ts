@@ -2,7 +2,8 @@ export const gptEndpoints = Object.freeze({
 	assistants: '/assistants',
 	threads: '/threads',
 	models: '/models',
-	completions: '/chat/completions'
+	completions: '/chat/completions',
+	imagesGenerations: '/images/generations',
 });
 
 export type GptEndpoints = 
@@ -10,3 +11,4 @@ export type GptEndpoints =
 | '/threads'
 | '/models'
 | '/chat/completions'
+| '/images/generations';

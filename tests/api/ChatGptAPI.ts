@@ -2,8 +2,8 @@
 import { TestTools } from '@pages/TestTools';
 import { type Page, expect, type APIResponse } from '@playwright/test';
 import * as env from 'dotenv';
-import { type GptEndpoints as GptEndpoints, gptEndpoints } from './ChatGptEndpoints';
-import type { ModelIdOptions, ModelsResponse, CompletionsRequest, ChatCompletionResponse } from './ChatGptTypes';
+import { type GptEndpoints, gptEndpoints } from './ChatGptEndpoints';
+import type { ModelIdOptions, ModelsResponse, CompletionsRequest, ChatCompletionResponse, ImageGenerationRequest, ImageGenerationResponse, ImageVisionPreviewRequest } from './ChatGptTypes';
 env.config();
 
 export class ChatGptAPI extends TestTools {
@@ -43,9 +43,10 @@ export class ChatGptAPI extends TestTools {
 		}
 	}
 
-	async apiPOST(endpoint: GptEndpoints, body: CompletionsRequest) {
+	async apiPOST(endpoint: GptEndpoints, body: unknown) {
 		const url = `${this.baseUrl}${endpoint}`;
 		console.log('🔍 POST:', url);
+		console.log('📦️ Request Body:', body);
 		try {
 			const response = await this.api.post(url, {
 				headers: {
@@ -83,13 +84,57 @@ export class ChatGptAPI extends TestTools {
 				}
 			]
 		};
-		console.log('📦️ Request Body:', body);
-		console.log('💬 Prompt:', arg.givenPrompt);
 		const response = await this.apiPOST(gptEndpoints.completions, body);
 		const bodyRes = await response.json() as ChatCompletionResponse;
 		const answer = bodyRes.choices[0].message.content;
 		console.log('🤖 Aurora Reply:', answer );
 		return bodyRes;
+	}
+
+	async apiPostImageGeneration(arg: { givenPrompt: string, size?: string, imagesQty?: number }) {
+		const body: ImageGenerationRequest = {
+			model: 'dall-e-3',
+			prompt: arg.givenPrompt,
+			n: arg.imagesQty ?? 1, // up to 10 images generated
+			size: arg.size ?? '1024x1024'
+		};
+		const response = await this.apiPOST(gptEndpoints.imagesGenerations, body);
+		const bodyRes = await response.json() as ImageGenerationResponse;
+		const answer = bodyRes.data[0].url;
+		console.log('🤖 Aurora Reply:', answer );
+		return bodyRes;
+	}
+
+	async apiPostImageReading(arg: { givenPrompt: string, imageUrl: string, context?: string }) {
+		const body: ImageVisionPreviewRequest ={
+			model: 'gpt-4-vision-preview',
+			messages: [
+				{
+					role: 'system',
+					content: arg.context ?? this.defaultContext
+				},
+				{
+					role: 'user',
+					content: [
+						{
+							type: 'text',
+							text: arg.givenPrompt
+						},
+						{
+							type: 'image_url',
+							image_url: { url: arg.imageUrl }
+						}
+					]
+				}
+			],
+			max_tokens: 200
+		}; 
+		const response = await this.apiPOST(gptEndpoints.completions, body);
+		const bodyRes = await response.json() as ChatCompletionResponse;
+		const answer = bodyRes.choices[0].message.content;
+		console.log('🤖 Aurora Reply:', answer );
+		return bodyRes;
+
 	}
 
 }
