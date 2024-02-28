@@ -210,8 +210,7 @@ class MyReporter implements Reporter {
 		console.log('\n\x1b[43m\x1b[30m%s\x1b[0m', '📊 TEST REPORT SUMMARY:', '\n');
 		console.group();
 		this.testResults.forEach((test) => {
-			const duration = test.testDuration;
-			if(!duration) throw new Error('Test Duration is not defined');
+			const duration = test.testDuration!;
 			const durationDecimal = (test.testDuration = duration / 1000);
 			if (test.testStatus === 'passed')
 				console.log('\x1b[32m%s\x1b[0m', test.testStatus, '✅', test.testNumber, '🧪', test.testName, durationDecimal, 's');
